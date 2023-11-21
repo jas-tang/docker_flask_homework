@@ -34,11 +34,109 @@ CMD ["python", "app.py"]
 * "EXPOSE 5000" makes the container on port 5000
 * "CMD ["python", "app.py"]" runs the app.py
 
+Next, in the shell, we run the following command.
+```
+Docker build command: docker build -t jason .
+```
+This names our app, "jason". 
 
+Then run: 
+```
+Docker run command: docker run -d -p 8000:5000 jason
+```
+-d runs the app in a detached mode, so the app runs in the background. 
+-p will choose a port. For this instance, we chose port 8000 as the docker with 5000 as the base. 
+Finally, we name our app. 
 
-docker-compose up --build is going to create the images based off the instructions.
-Docker compose automatically detects change. This is because of what we described in the yaml file, which was volumes, which will allow the OS to detect and push changes. 
+```
+Docker images
+```
+Docker images will let us see what images we have built.
 
-docker-compose up -d can also do detach
-To stop these, docker-compose down
+```
+Docker ps
+```
+Will allow us to see which images we've activated. 
+
+```
+Docker stop [CONTAINER ID]
+```
+Will allow us to stop the container given the container id. 
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/1.JPG)
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/2.JPG)
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/3.JPG)
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/4.JPG)
+
+We can see our app run on port 8000.
+
+In order to edit the flask apps, we will need to rebuild the image again. 
+
+```
+docker run -p port:port
+```
+
+To re run. 
+
+## Preparing Two Flask Applications
+
+We create two separate flask apps, each with its own requirements and dockerfiles. They are in separate folders. 
+
+We then set up a docker-compose.yml on the same level as the folders that hold each flask app respectively.
+
+This is the setup: 
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/5.JPG)
+
+The following is the docker-compose.yaml file:
+```
+version: '3'
+services:
+  flask_app_1:
+    build: ./flask1
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./flask1:/app
+  flask_app_2:
+    build: ./flask2
+    ports:
+      - "5002:5000"
+    volumes:
+      - ./flask2:/app
+```
+* Version 3 specifies the v ersion of the Docker Compose file
+* Services chooses the containers that make up the application. For our case, its flask 1 and flask 2
+* Build specifies the build for each service
+* The Ports are the ports we choose to host the flask apps
+* Volumes will allow the OS to detect and push changes. 
+
+Now, we move on to work in the shell.
+
+```
+docker-compose up --build
+```
+
+We can also run with detach. 
+
+```
+docker-compose up -d
+```
+
+To stop these, 
+
+```
+docker-compose down
+```
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/6.JPG)
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/7.JPG)
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/8.JPG)
+
+![](https://github.com/jas-tang/docker_flask_homework/blob/main/images/9.JPG)
 
